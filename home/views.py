@@ -5,6 +5,7 @@ import copy
 import operator
 
 from Games.models import Games
+from home.averageRating import AverageRating, OnlyAverage
 from .game import Game
 from .playtime import Playtime
 from .read_csv import game_list
@@ -146,3 +147,24 @@ def lowest_rating(request):
     sorted_badRating = sorted_badRating[:10]
 
     return render(request, 'home/lowestRating.html', context ={'badRatings': sorted_badRating})
+
+def average_rating(request):
+    # avg_rating = []
+
+    # for i, o in enumerate(game_list):
+    #     avg_rating.append(AverageRating(o.title, o.pos_rate, o.neg_rate).getAverage())
+
+
+    # sorted_avg = sorted(avg_rating, key=lambda x: -1 * float('inf') if x is None else x)
+    # sorted_avg = sorted_avg[:10]
+
+    avg_rating = []
+
+    for i, o in enumerate(game_list):
+        avg_rating.append(OnlyAverage(o.title, AverageRating(o.title, o.pos_rate, o.neg_rate).getAverage()))
+
+    #sorted_avg = sorted(avg_rating, key=lambda x: -1 * float('inf') if x is None else x)
+    sorted_avg = avg_rating[:10]
+
+
+    return render(request, 'home/avgRating.html', context ={'avg_rating': sorted_avg})
